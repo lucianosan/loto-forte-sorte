@@ -1,6 +1,6 @@
 # LotoWb
 
-**LotoW baplicação web moderna e robusta desenvolvida com **Angular 17+** para auxiliar apostadores de loterias da Caixa. O aplicativo permite gerar palpites utilizando diferentes estratégias matemáticas e conferir resultados automaticamente, oferecendo uma interface intuitiva e responsiva.
+**Loto forte sorte aplicação web moderna e robusta desenvolvida com **Angular 17+** para auxiliar apostadores de loterias da Caixa. O aplicativo permite gerar palpites utilizando diferentes estratégias matemáticas e conferir resultados automaticamente, oferecendo uma interface intuitiva e responsiva.
 
 ---
 
@@ -63,7 +63,7 @@ Siga os passos abaixo para executar a aplicação em seu ambiente local:
 
 1.  Clone o repositório (ou baixe os arquivos):
     ```bash
-    git clone https://github.com/seu-usuario/loto-forte-sorte.git
+    git clone https://github.com/lucianosan/loto-forte-sorte.git
     cd loto-forte-sorte
     ```
 
