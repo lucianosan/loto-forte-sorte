@@ -7,6 +7,7 @@ export interface LotteryResult {
   concurso: number;
   data: string;
   dezenas: string[];
+  dezenas2?: string[]; // Para Dupla Sena (2º sorteio)
   trevos?: string[]; // Para +Milionária
   mesSorte?: string; // Para Dia de Sorte
 }
@@ -38,6 +39,18 @@ export class LotteryService {
       catchError(error => {
         console.error('Erro ao buscar resultado:', error);
         return of(null);
+      })
+    );
+  }
+
+  getAllResults(gameType: string): Observable<LotteryResult[]> {
+    const apiName = this.apiNames[gameType];
+    if (!apiName) return of([]);
+
+    return this.http.get<LotteryResult[]>(`${this.baseUrl}/${apiName}`).pipe(
+      catchError(error => {
+        console.error('Erro ao buscar histórico:', error);
+        return of([]);
       })
     );
   }

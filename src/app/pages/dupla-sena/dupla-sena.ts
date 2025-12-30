@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GameService } from '../../services/game';
 import { PdfService } from '../../services/pdf.service';
+import { LotteryService, LotteryResult } from '../../services/lottery.service';
 
 @Component({
   selector: 'app-dupla-sena',
@@ -14,6 +15,7 @@ import { PdfService } from '../../services/pdf.service';
 export class DuplaSena {
   private gameService = inject(GameService);
   private pdfService = inject(PdfService);
+  private lotteryService = inject(LotteryService);
   
   mode: 'RANDOM' | 'COMBINATION' | 'CLOSURE' = 'RANDOM';
   generatedGames: number[][] = [];
@@ -29,6 +31,12 @@ export class DuplaSena {
   // Paginação
   currentPage = 1;
   pageSize = 20;
+
+  // Verificação
+  contestNumber: number | null = null;
+  lastResult: LotteryResult | null = null;
+  resultNumbers: number[] = [];
+  isChecking = false;
 
   get paginatedGames(): number[][] {
     const start = (this.currentPage - 1) * this.pageSize;
@@ -121,8 +129,8 @@ export class DuplaSena {
     });
   }
 
-  getHits(game: number[]): number {
-    return this.lotteryService.checkHits(game, this.resultNumbers);
+  getHits(game: number[], result: number[]): number {
+    return this.lotteryService.checkHits(game, result);
   }
 
   clearResult() {

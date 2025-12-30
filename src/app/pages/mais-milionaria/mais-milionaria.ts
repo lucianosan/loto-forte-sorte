@@ -160,13 +160,15 @@ export class MaisMilionaria {
     });
   }
 
-  getHits(game: number[], result: number[]): number {
-    return this.lotteryService.checkHits(game.slice(0, 6), result);
+  getHits(game: number[], result: number[] = []): number {
+    const targetResult = result.length > 0 ? result : this.resultNumbers;
+    return this.lotteryService.checkHits(game.slice(0, 6), targetResult);
   }
 
-  getTrevosHits(game: number[], result: number[]): number {
+  getTrevosHits(game: number[], result: number[] = []): number {
     const gameTrevos = game.slice(6, 8);
-    return this.lotteryService.checkHits(gameTrevos, result);
+    const targetResult = result.length > 0 ? result : this.resultTrevos;
+    return this.lotteryService.checkHits(gameTrevos, targetResult);
   }
 
   checkTrevoHit(trevo: number): boolean {

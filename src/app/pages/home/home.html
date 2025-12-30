@@ -4,6 +4,50 @@
     <p>Crie combinações inteligentes para aumentar suas chances.</p>
   </section>
 
+  <section class="boloes-section" *ngIf="boloes$ | async as boloes">
+    <div class="section-header">
+      <h2>Bolões em Destaque</h2>
+      <p>Participe dos nossos grupos e aumente suas chances!</p>
+    </div>
+
+    <div class="boloes-list">
+      <div class="bolao-card" *ngFor="let bolao of boloes">
+        <div class="card-left-strip" [ngClass]="bolao.lotteryType.toLowerCase()"></div>
+        <div class="card-content">
+          <div class="card-header">
+            <span class="lottery-name">{{ bolao.lotteryType.replace('_', ' ') }}</span>
+            <span class="contest-info">Conc.: {{ bolao.contestNumber }} | {{ bolao.contestDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+          
+          <div class="card-body">
+            <div class="group-info">
+              <h3>Grupo {{ bolao.code }}</h3>
+              <span class="chance-badge">
+                <i class="chart-icon">📊</i> {{ bolao.chanceLabel }}
+              </span>
+            </div>
+            
+            <div class="details-link">
+              <span [routerLink]="['/bolao', bolao.id]">Ver detalhes +</span>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <div class="shares-info">
+              <span>Restam <strong>{{ bolao.availableShares }}/{{ bolao.totalShares }}</strong></span>
+            </div>
+            <div class="price-action">
+              <span class="price">{{ bolao.pricePerShare | currency:'BRL' }}</span>
+              <button class="btn-buy" (click)="buyBolao(bolao)">
+                🛒
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="games-grid">
     <div class="game-card mega">
       <h2>Mega Sena</h2>

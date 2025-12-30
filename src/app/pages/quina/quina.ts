@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GameService } from '../../services/game';
 import { PdfService } from '../../services/pdf.service';
+import { LotteryService, LotteryResult } from '../../services/lottery.service';
 
 @Component({
   selector: 'app-quina',
@@ -14,6 +15,13 @@ import { PdfService } from '../../services/pdf.service';
 export class Quina {
   private gameService = inject(GameService);
   private pdfService = inject(PdfService);
+  private lotteryService = inject(LotteryService);
+  
+  // Verificação de Resultados
+  contestNumber: number | null = null;
+  lastResult: LotteryResult | null = null;
+  resultNumbers: number[] = [];
+  isChecking = false;
   
   mode: 'RANDOM' | 'COMBINATION' | 'CLOSURE' = 'RANDOM';
   generatedGames: number[][] = [];
@@ -114,8 +122,9 @@ export class Quina {
     });
   }
 
-  getHits(game: number[]): number {
-    return this.lotteryService.checkHits(game, this.resultNumbers);
+  getHits(game: number[], result: number[] = []): number {
+    const targetResult = result.length > 0 ? result : this.resultNumbers;
+    return this.lotteryService.checkHits(game, targetResult);
   }
 
   clearResult() {

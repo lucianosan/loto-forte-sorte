@@ -1,0 +1,106 @@
+<div class="admin-container">
+  <h1>Administração de Bolões</h1>
+  
+  <div class="admin-grid">
+    <!-- Form Panel -->
+    <div class="panel form-panel">
+      <h2>Criar Novo Bolão</h2>
+      
+      <div class="form-group">
+        <label>Loteria</label>
+        <select [(ngModel)]="lotteryType">
+          <option *ngFor="let type of lotteryTypes" [value]="type.value">{{ type.label }}</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>Concurso</label>
+          <input type="number" [(ngModel)]="contestNumber" placeholder="Ex: 2550">
+        </div>
+        <div class="form-group">
+          <label>Data Sorteio</label>
+          <input type="date" [(ngModel)]="contestDate">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>Cotas Totais</label>
+          <input type="number" [(ngModel)]="totalShares">
+        </div>
+        <div class="form-group">
+          <label>Preço por Cota (R$)</label>
+          <input type="number" [(ngModel)]="pricePerShare">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Classificação de Chance</label>
+        <select [(ngModel)]="chanceLabel">
+          <option *ngFor="let opt of chanceOptions" [value]="opt">{{ opt }}</option>
+        </select>
+      </div>
+
+      <hr>
+
+      <h3>Geração de Jogos</h3>
+      <div class="row">
+        <div class="form-group">
+          <label>Quantidade de Jogos</label>
+          <input type="number" [(ngModel)]="gamesCount">
+        </div>
+        <button class="btn-generate" (click)="generateGames()">Gerar Jogos Aleatórios</button>
+        <button class="btn-verify" (click)="verifyGames()" [disabled]="isVerifying || generatedGames.length === 0">
+          {{ isVerifying ? 'Verificando...' : 'Verificar Histórico' }}
+        </button>
+      </div>
+
+      <div class="verification-results" *ngIf="verificationResults.length > 0">
+        <h4>⚠️ Premiações em Concursos Anteriores</h4>
+        <div class="results-grid">
+          <div *ngFor="let item of verificationResults" class="result-card">
+            <div class="card-header">
+              <strong>Jogo {{ item.gameIndex }}</strong>
+            </div>
+            <div class="card-body">
+              <div *ngFor="let match of item.matches" class="match-item">
+                <div class="match-info">
+                  <span class="hits-badge">{{ match.hits }} acertos</span>
+                  <span class="contest-details">Conc. {{ match.contest }} - {{ match.date }}</span>
+                </div>
+                <div class="game-balls-visual">
+                  <span *ngFor="let num of item.game" 
+                        class="ball" 
+                        [class.hit]="match.matchedNumbers.includes(num)">
+                    {{ num }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="generated-preview" *ngIf="generatedGames.length > 0">
+        <p><strong>{{ generatedGames.length }}</strong> jogos gerados.</p>
+        <div class="games-list">
+          <div *ngFor="let game of generatedGames; let i = index" class="game-row">
+             {{ i + 1 }}: {{ game.join(', ') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-create" (click)="createBolao()">Publicar Bolão</button>
+      </div>
+    </div>
+
+    <!-- Preview/Info Panel -->
+    <div class="panel info-panel">
+      <h3>Resumo</h3>
+      <p><strong>Total Arrecadação:</strong> {{ (totalShares * pricePerShare) | currency:'BRL' }}</p>
+      <p><strong>Tipo:</strong> {{ lotteryType }}</p>
+    </div>
+  </div>
+</div>

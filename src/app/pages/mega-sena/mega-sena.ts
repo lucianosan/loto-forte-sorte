@@ -135,9 +135,10 @@ export class MegaSena {
     this.resultNumbers = [];
   }
 
-  getHits(game: number[]): number {
-    if (!this.lastResult) return 0;
-    return this.lotteryService.checkHits(game, this.resultNumbers);
+  getHits(game: number[], result: number[] = []): number {
+    const targetResult = result.length > 0 ? result : this.resultNumbers;
+    if (targetResult.length === 0) return 0;
+    return this.lotteryService.checkHits(game, targetResult);
   }
 
   isMatched(num: number): boolean {

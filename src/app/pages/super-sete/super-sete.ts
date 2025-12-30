@@ -108,10 +108,11 @@ export class SuperSete {
     });
   }
 
-  getHits(game: number[], result: number[]): number {
+  getHits(game: number[], result: number[] = []): number {
+    const targetResult = result.length > 0 ? result : this.resultNumbers;
     // Super Sete is positional match
     return game.reduce((hits, num, index) => {
-      return hits + (num === result[index] ? 1 : 0);
+      return hits + (num === targetResult[index] ? 1 : 0);
     }, 0);
   }
 

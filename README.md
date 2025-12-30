@@ -1,87 +1,66 @@
-# Loto sorte forte
+# Loto Forte Sorte 🍀
 
-**Loto forte sorte aplicação web moderna e robusta desenvolvida com **Angular 17+** para auxiliar apostadores de loterias da Caixa. O aplicativo permite gerar palpites utilizando diferentes estratégias matemáticas e conferir resultados automaticamente, oferecendo uma interface intuitiva e responsiva.
+Uma aplicação web moderna desenvolvida em Angular para geração, conferência e gerenciamento de jogos de loteria e bolões.
 
----
+## 🚀 Funcionalidades
 
-## 🚀 Funcionalidades Principais
+### 🎲 Jogos Suportados
+O sistema suporta a geração e conferência das principais loterias da Caixa:
+- Mega Sena
+- Lotofácil
+- Quina
+- Lotomania
+- Dupla Sena
+- Dia de Sorte
+- Super Sete
+- +Milionária
 
-### 1. Suporte a Múltiplas Loterias
-O sistema suporta as principais modalidades de loteria do Brasil, cada uma com sua identidade visual e regras específicas:
-*   **Mega Sena**
-*   **Lotofácil**
-*   **Quina**
-*   **Lotomania**
-*   **Dupla Sena**
-*   **Dia de Sorte** (incluindo Mês de Sorte)
-*   **Super Sete** (aposta por colunas)
-*   **+Milionária** (números + trevos)
+### 🛠️ Ferramentas de Jogo
+- **Geração Aleatória**: Criação de palpites baseados em aleatoriedade.
+- **Fechamentos**: Algoritmos para criar jogos com garantias matemáticas de acerto.
+- **Conferência Automática**: Verificação de resultados através da integração com API de loterias.
 
-### 2. Modos de Geração de Jogos
-O aplicativo oferece três estratégias poderosas para criação de jogos:
+### 🏢 Área Administrativa de Bolões (Novo)
+Funcionalidade exclusiva para gestão de bolões:
+- **Criação de Bolões**: Geração de múltiplos jogos para venda em cotas.
+- **Verificação Histórica**: Validação instantânea se os jogos gerados já foram premiados em concursos passados.
+  - Exibição visual dos acertos (cartão de loteria).
+  - Detalhes de concurso e data da premiação.
+- **Publicação**: Disponibilização automática dos bolões na página inicial.
 
-*   **🎲 Modo Aleatório**: Gera palpites rápidos baseados em sorteios aleatórios simples, ideal para quem quer apenas "tentar a sorte" sem complicações.
-*   **🔢 Modo Combinações**: Permite selecionar um grupo maior de números e gerar *todas* as combinações possíveis entre eles.
-*   **🔒 Modo Fechamento**: Uma estratégia avançada que permite jogar com mais números gastando menos. Garante uma premiação mínima (ex: Quadra ou Quina) caso as dezenas sorteadas estejam dentro do seu conjunto de números escolhidos.
+### 🛒 Experiência do Usuário
+- **Home Page**: Visualização de bolões disponíveis com indicadores de loteria.
+- **Detalhes do Bolão**: Página dedicada com:
+  - Resumo de cotas e valores.
+  - Lista de todos os jogos do bolão.
+  - Análise de estratégias utilizadas.
+  - Simulação de compra (carrinho).
 
-### 3. Conferência de Resultados Automática
-Integração direta com API de resultados para conferência em tempo real:
-*   **Busca Automática**: Ao abrir a conferência, o sistema busca o último concurso disponível.
-*   **Busca por Concurso**: Possibilidade de conferir jogos contra concursos passados específicos.
-*   **Feedback Visual Imediato**:
-    *   As dezenas acertadas são destacadas no volante.
-    *   Contadores de acertos (Badges) indicam o desempenho de cada jogo (ex: "4 acertos", "11 pontos").
-    *   Suporte a regras especiais: Acerto de Mês (Dia de Sorte), Trevos (+Milionária) e Colunas (Super Sete).
+## 💻 Tecnologias
 
-### 4. Exportação e Impressão
-*   **📄 Exportar PDF**: Gere um arquivo PDF organizado com todos os seus jogos gerados, pronto para impressão ou para levar à lotérica.
+- **Angular 17+**: Framework principal com Standalone Components.
+- **TypeScript**: Tipagem estática para maior segurança.
+- **SCSS**: Estilização modular e responsiva com uso de variáveis CSS para temas.
+- **RxJS**: Gerenciamento de estado reativo e chamadas assíncronas.
 
----
+## 📦 Instalação e Execução
 
-## 🛠️ Tecnologias Utilizadas
+1. **Instale as dependências:**
+   ```bash
+   npm install
+   ```
 
-Este projeto foi construído com as melhores práticas de desenvolvimento web moderno:
+2. **Execute o servidor de desenvolvimento:**
+   ```bash
+   npm start
+   ```
+   Acesse `http://localhost:4200/`.
 
-*   **Angular 17+**: Framework principal, utilizando a nova arquitetura de **Standalone Components**.
-*   **TypeScript**: Para tipagem estática e segurança do código.
-*   **SCSS**: Estilização modular e responsiva, com temas de cores específicos para cada loteria.
-*   **RxJS**: Manipulação reativa de eventos e chamadas de API.
-*   **jsPDF**: Biblioteca para geração de documentos PDF no lado do cliente.
-*   **Loterias Caixa API**: Integração para busca de resultados oficiais.
+## 📱 Estrutura do Projeto
 
----
+- `src/app/pages`: Componentes de página (Home, Admin, Jogos Específicos).
+- `src/app/services`: Serviços para lógica de negócios (GameService, LotteryService, BolaoService).
+- `src/app/shared`: Componentes reutilizáveis.
 
-## 📦 Como Rodar o Projeto
-
-Siga os passos abaixo para executar a aplicação em seu ambiente local:
-
-### Pré-requisitos
-*   Node.js instalado (versão 18 ou superior recomendada).
-*   Angular CLI instalado globalmente.
-
-### Instalação
-
-1.  Clone o repositório (ou baixe os arquivos):
-    ```bash
-    git clone https://github.com/lucianosan/loto-forte-sorte.git
-    cd loto-forte-sorte
-    ```
-
-2.  Instale as dependências:
-    ```bash
-    npm install
-    ```
-
-3.  Inicie o servidor de desenvolvimento:
-    ```bash
-    ng serve
-    ```
-
-4.  Acesse a aplicação no navegador:
-    Abra `http://localhost:4200/`. A aplicação será recarregada automaticamente se você alterar qualquer arquivo de origem.
-
----
-
-## 📱 Responsividade
-
-O **Loto Forte Sorte** foi desenhado para funcionar perfeitamente em qualquer dispositivo, desde desktops até smartphones e tablets, adaptando o layout para oferecer a melhor experiência de uso em qualquer tamanho de tela.
+## ⚠️ Nota
+Este projeto é para fins educacionais e de estudo sobre probabilidades e desenvolvimento web. Não realiza apostas reais na Caixa Econômica Federal.

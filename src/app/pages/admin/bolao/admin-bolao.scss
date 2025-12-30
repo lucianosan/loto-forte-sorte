@@ -1,0 +1,220 @@
+.admin-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.panel {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3 {
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+  
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #475569;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 1rem;
+    
+    &:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+  }
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  
+  .form-group {
+    flex: 1;
+  }
+}
+
+.btn-generate {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  
+  &:hover { background: #2563eb; }
+}
+
+.btn-verify {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+
+  &:hover { background: #d97706; }
+  &:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+  }
+}
+
+.verification-results {
+  margin-top: 1.5rem;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  padding: 1.5rem;
+  border-radius: 8px;
+  
+  h4 {
+    margin-top: 0;
+    color: #c2410c;
+    margin-bottom: 1rem;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .result-card {
+    background: white;
+    border: 1px solid #fed7aa;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+    .card-header {
+      background: #ffedd5;
+      padding: 0.75rem;
+      border-bottom: 1px solid #fed7aa;
+      font-weight: 600;
+      color: #9a3412;
+    }
+
+    .card-body {
+      padding: 0.75rem;
+
+      .match-item {
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px dashed #fed7aa;
+        
+        &:last-child {
+          margin-bottom: 0;
+          padding-bottom: 0;
+          border-bottom: none;
+        }
+
+        .match-info {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 0.5rem;
+          flex-wrap: wrap;
+
+          .hits-badge {
+            background: #f97316;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+          }
+
+          .contest-details {
+            font-size: 0.9rem;
+            color: #7c2d12;
+          }
+        }
+
+        .game-balls-visual {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.25rem;
+          
+          .ball {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid #cbd5e1;
+            
+            &.hit {
+              background: #16a34a;
+              color: white;
+              border-color: #15803d;
+              box-shadow: 0 0 0 2px #dcfce7;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.btn-create {
+  width: 100%;
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+
+  &:hover { background: #059669; }
+}
+
+.generated-preview {
+  margin-top: 1rem;
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+
+  .games-list {
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #334155;
+  }
+}

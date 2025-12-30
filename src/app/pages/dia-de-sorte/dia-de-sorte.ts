@@ -135,9 +135,11 @@ export class DiaDeSorte {
     });
   }
 
-  getHits(game: number[], result: number[]): number {
+  getHits(game: number[], result: number[] = []): number {
     // First 7 numbers are the game numbers
-    return this.lotteryService.checkHits(game.slice(0, 7), result);
+    // Use the passed result if available, otherwise fall back to this.resultNumbers
+    const targetResult = result.length > 0 ? result : this.resultNumbers;
+    return this.lotteryService.checkHits(game.slice(0, 7), targetResult);
   }
 
   checkMonthHit(game: number[]): boolean {

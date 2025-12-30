@@ -1,0 +1,108 @@
+<div class="detail-container" *ngIf="bolao; else notFound">
+  <div class="content-grid">
+    <!-- Main Content (Left) -->
+    <div class="main-column">
+      <div class="tabs">
+        <button [class.active]="activeTab === 'details'" (click)="activeTab = 'details'">Detalhes do bolão</button>
+        <button [class.active]="activeTab === 'games'" (click)="activeTab = 'games'">Apostas ({{ bolao.games.length }})</button>
+        <button [class.active]="activeTab === 'strategies'" (click)="activeTab = 'strategies'">Estratégias</button>
+      </div>
+
+      <div class="tab-content">
+        <!-- Estratégias Tab (Default as per screenshot) -->
+        <div *ngIf="activeTab === 'strategies'" class="strategy-content">
+          <div class="prob-header">
+            <h3>Probabilidade {{ bolao.chanceLabel.toLowerCase() }}! 📊</h3>
+          </div>
+
+          <div class="strategy-text">
+            <h4>Estratégias</h4>
+            <p class="highlight">SUPER GRUPO!</p>
+            <p>{{ bolao.games.length }} cartões! PREMIAÇÃO MULTIPLICADA!</p>
+            <p>A probabilidade de ACERTARMOS é AUMENTADA com fechamentos matemáticos.</p>
+            
+            <div class="prize-info">
+              <p><strong>Premiação garantida:</strong></p>
+              <ul>
+                <li>Otimização de custos com fechamentos inteligentes</li>
+                <li>Cobertura de múltiplas combinações numéricas</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="composition-box">
+            <h4>Composição da aposta</h4>
+            <p class="sub-label">Dezenas utilizadas neste bolão</p>
+            
+            <div class="numbers-grid">
+              <span *ngFor="let num of uniqueNumbers" class="num-badge">{{ num | number:'2.0-0' }}</span>
+            </div>
+          </div>
+
+          <div class="info-note">
+            <p>ℹ️ A descrição acima tem caráter informativo e não serve como comprovante de aposta. Confira nesta página os números escolhidos e as apostas do bolão.</p>
+          </div>
+        </div>
+
+        <!-- Apostas Tab -->
+        <div *ngIf="activeTab === 'games'" class="games-content">
+          <h3>Jogos Gerados</h3>
+          <div class="games-list">
+            <div *ngFor="let game of bolao.games; let i = index" class="game-row">
+              <span class="game-index">Jogo {{ i + 1 }}</span>
+              <div class="game-numbers">
+                <span *ngFor="let n of game" class="small-num">{{ n | number:'2.0-0' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detalhes Tab -->
+        <div *ngIf="activeTab === 'details'" class="details-content">
+          <h3>Detalhes do Sorteio</h3>
+          <p><strong>Concurso:</strong> {{ bolao.contestNumber }}</p>
+          <p><strong>Data:</strong> {{ bolao.contestDate | date:'dd/MM/yyyy' }}</p>
+          <p><strong>Loteria:</strong> {{ bolao.lotteryType.replace('_', ' ') }}</p>
+          <p><strong>Código:</strong> {{ bolao.code }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar (Right - Sticky Cart Card) -->
+    <div class="sidebar-column">
+      <div class="cart-card">
+        <div class="card-header-strip"></div>
+        <div class="cart-content">
+          <h3>BOLÃO {{ bolao.lotteryType.replace('_', ' ') }}</h3>
+          <p class="prize-estimate">R$ ESTIMADO</p>
+          
+          <div class="stats-row">
+            <div class="stat">
+              <span class="label">Cotas</span>
+              <span class="value">{{ bolao.totalShares }}</span>
+            </div>
+            <div class="stat">
+              <span class="label">Disponíveis</span>
+              <span class="value">{{ bolao.availableShares }}</span>
+            </div>
+            <div class="stat price">
+              <span class="label">Valor da cota</span>
+              <span class="value">{{ bolao.pricePerShare | currency:'BRL' }}</span>
+            </div>
+          </div>
+
+          <button class="btn-add-cart" (click)="buyBolao()">
+            🛒 Adicionar ao carrinho
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #notFound>
+  <div class="not-found">
+    <h2>Bolão não encontrado</h2>
+    <a routerLink="/" class="btn-back">Voltar para Home</a>
+  </div>
+</ng-template>
