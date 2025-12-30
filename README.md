@@ -1,4 +1,4 @@
-# LotoWb
+# Loto sorte forte
 
 **Loto forte sorte aplicação web moderna e robusta desenvolvida com **Angular 17+** para auxiliar apostadores de loterias da Caixa. O aplicativo permite gerar palpites utilizando diferentes estratégias matemáticas e conferir resultados automaticamente, oferecendo uma interface intuitiva e responsiva.
 
