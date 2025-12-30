@@ -1,0 +1,102 @@
+<div class="page-container">
+  <header class="page-header">
+    <h2>Lotofácil</h2>
+    <p>Aposte com mais chances na Lotofácil.</p>
+  </header>
+
+  <div class="controls">
+    <div class="tabs">
+      <button [class.active]="mode === 'RANDOM'" (click)="mode = 'RANDOM'; generatedGames = []; clearResult()">Surpresinha</button>
+      <button [class.active]="mode === 'COMBINATION'" (click)="mode = 'COMBINATION'; generatedGames = []; clearResult()">Desdobramento</button>
+      <button [class.active]="mode === 'CLOSURE'" (click)="mode = 'CLOSURE'; generatedGames = []; clearResult()">Fechamento</button>
+    </div>
+
+    <div class="control-panel" *ngIf="mode === 'RANDOM'">
+      <div class="input-group">
+        <label>Quantidade de Jogos:</label>
+        <input type="number" [(ngModel)]="randomCount" min="1" max="50">
+      </div>
+      <button class="btn-generate" (click)="generateRandom()">Gerar Jogos</button>
+    </div>
+
+    <div class="control-panel" *ngIf="mode === 'COMBINATION' || mode === 'CLOSURE'">
+      <div class="number-grid">
+        <button 
+          *ngFor="let num of availableNumbers" 
+          class="number-btn" 
+          [class.selected]="selectedNumbers.has(num)"
+          (click)="toggleNumber(num)">
+          {{ num | number:'2.0-0' }}
+        </button>
+      </div>
+      <div class="actions">
+        <p>Selecionados: {{ selectedNumbers.size }} (Mín: 15, Máx: 18)</p>
+        
+        <div class="closure-options" *ngIf="mode === 'CLOSURE'">
+          <label>Garantia se acertar 15:</label>
+          <select [(ngModel)]="closureGuarantee">
+            <option [value]="11">11 acertos</option>
+            <option [value]="12">12 acertos</option>
+            <option [value]="13">13 acertos</option>
+            <option [value]="14">14 acertos</option>
+          </select>
+        </div>
+
+        <button class="btn-generate" 
+                [disabled]="!isCombinationValid" 
+                (click)="mode === 'COMBINATION' ? generateCombinations() : generateClosure()">
+          {{ mode === 'COMBINATION' ? 'Gerar Combinações' : 'Gerar Fechamento' }}
+        </button>
+        <button class="btn-clear" (click)="clearSelection()">Limpar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="results" *ngIf="generatedGames.length > 0">
+    <div class="results-header">
+      <h3>Jogos Gerados ({{ generatedGames.length }})</h3>
+      <button class="btn-print" (click)="exportPdf()">🖨️ Imprimir Volantes</button>
+    </div>
+
+    <div class="check-results">
+      <div class="check-controls">
+        <input type="number" [(ngModel)]="contestNumber" placeholder="Nº Concurso (Vazio = Último)">
+        <button class="btn-check" (click)="checkResult()" [disabled]="isChecking">
+          {{ isChecking ? 'Buscando...' : 'Conferir Resultado' }}
+        </button>
+      </div>
+      
+      <div class="result-info" *ngIf="lastResult">
+        <div class="result-details">
+          <strong>Concurso {{ lastResult.concurso }}</strong>
+          <span>{{ lastResult.data }}</span>
+        </div>
+        <div class="result-balls">
+          <span class="ball result" *ngFor="let n of lastResult.dezenas">{{ n }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="games-list">
+      <div class="game-row" *ngFor="let game of paginatedGames; let i = index">
+        <span class="game-index">#{{ (currentPage - 1) * pageSize + i + 1 }}</span>
+        <div class="balls">
+          <span class="ball" 
+                [class.matched]="isMatched(n)" 
+                *ngFor="let n of game">
+            {{ n | number:'2.0-0' }}
+          </span>
+        </div>
+        <div class="hits-badge" *ngIf="lastResult" [class.winner]="getHits(game) >= 11">
+          {{ getHits(game) }} acertos
+        </div>
+      </div>
+    </div>
+
+    <div class="pagination" *ngIf="totalPages > 1">
+      <button (click)="prevPage()" [disabled]="currentPage === 1">&lt;</button>
+      <span>Página {{ currentPage }} de {{ totalPages }}</span>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">&gt;</button>
+    </div>
+  </div>
+</div>

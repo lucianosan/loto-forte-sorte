@@ -1,0 +1,125 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>+Milionária</h2>
+    <p>Escolha 6 números e 2 trevos</p>
+  </div>
+
+  <div class="container">
+    <div class="controls">
+      <div class="tabs">
+        <button [class.active]="mode === 'RANDOM'" (click)="mode = 'RANDOM'; generatedGames = []">Aleatório</button>
+        <button [class.active]="mode === 'COMBINATION'" (click)="mode = 'COMBINATION'; generatedGames = []">Combinações</button>
+        <button [class.active]="mode === 'CLOSURE'" (click)="mode = 'CLOSURE'; generatedGames = []">Fechamento</button>
+      </div>
+
+      <div class="control-panel" *ngIf="mode === 'RANDOM'">
+        <div class="input-group">
+          <label>Quantidade de jogos:</label>
+          <input type="number" [(ngModel)]="randomCount" min="1" max="50">
+        </div>
+        <button class="btn-generate" (click)="generateRandom()">Gerar Jogos</button>
+      </div>
+
+      <div class="control-panel" *ngIf="mode === 'COMBINATION' || mode === 'CLOSURE'">
+        <div class="selection-info">
+          <p>Números: <strong>{{ selectedNumbers.size }}</strong> (6-12) | Trevos: <strong>{{ selectedTrevos.size }}</strong> (2-6)</p>
+        </div>
+
+        <div class="closure-options" *ngIf="mode === 'CLOSURE'">
+          <label>Garantia (Números):</label>
+          <select [(ngModel)]="closureGuarantee">
+            <option [value]="4">Quadra (4 acertos)</option>
+            <option [value]="5">Quina (5 acertos)</option>
+          </select>
+        </div>
+        
+        <label>Matriz 1: Números (1-50)</label>
+        <div class="number-grid">
+          <button 
+            *ngFor="let num of availableNumbers"
+            class="number-btn"
+            [class.selected]="selectedNumbers.has(num)"
+            (click)="toggleNumber(num)">
+            {{ num | number:'2.0-0' }}
+          </button>
+        </div>
+
+        <label>Matriz 2: Trevos (1-6)</label>
+        <div class="trevo-grid">
+          <button 
+            *ngFor="let num of availableTrevos"
+            class="trevo-btn"
+            [class.selected]="selectedTrevos.has(num)"
+            (click)="toggleTrevo(num)">
+            ☘️ {{ num }}
+          </button>
+        </div>
+
+        <div class="actions">
+          <button 
+            class="btn-generate" 
+            [disabled]="!isCombinationValid"
+            (click)="mode === 'COMBINATION' ? generateCombinations() : generateClosure()">
+            {{ mode === 'COMBINATION' ? 'Gerar Combinações' : 'Gerar Fechamento' }}
+          </button>
+          <button class="btn-clear" (click)="clearSelection()">Limpar Seleção</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="results" *ngIf="generatedGames.length > 0">
+      <div class="results-header">
+        <h3>Jogos Gerados ({{ generatedGames.length }})</h3>
+        <button class="btn-print" (click)="exportPdf()">🖨️ Imprimir Volantes</button>
+      </div>
+
+      <div class="check-results">
+        <div class="check-controls">
+          <input type="number" [(ngModel)]="contestNumber" placeholder="Nº Concurso (Opcional)">
+          <button (click)="checkResult()" [disabled]="isChecking">
+            {{ isChecking ? 'Buscando...' : 'Conferir Resultado' }}
+          </button>
+        </div>
+        
+        <div class="last-result" *ngIf="lastResult">
+          <p>Concurso: <strong>{{ lastResult.concurso }}</strong> - {{ lastResult.data }}</p>
+          <div class="result-balls">
+            <span class="ball result" *ngFor="let num of resultNumbers">{{ num | number:'2.0-0' }}</span>
+            <span class="separator">|</span>
+            <span class="ball result trevo" *ngFor="let num of resultTrevos">☘️ {{ num }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="games-list">
+        <div class="game-row" *ngFor="let game of paginatedGames; let i = index">
+          <span class="game-index">Jogo {{ (currentPage - 1) * pageSize + i + 1 }}</span>
+          <div class="balls">
+            <!-- First 6 numbers -->
+            <span class="ball" 
+              *ngFor="let num of game.slice(0, 6)"
+              [class.match]="resultNumbers.includes(num)">
+              {{ num | number:'2.0-0' }}
+            </span>
+            <span class="separator">|</span>
+            <!-- Last 2 trevos -->
+            <span class="ball trevo" 
+              *ngFor="let num of game.slice(6, 8)"
+              [class.match]="checkTrevoHit(num)">
+              ☘️ {{ num }}
+            </span>
+          </div>
+          <div class="hits-badge" *ngIf="lastResult">
+            {{ getHits(game, resultNumbers) }} + {{ getTrevosHits(game, resultTrevos) }} trevos
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">&lt;</button>
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">&gt;</button>
+      </div>
+    </div>
+  </div>
+</div>

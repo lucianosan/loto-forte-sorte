@@ -1,0 +1,84 @@
+.home-container {
+  padding: 2rem 0;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 4rem;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+  }
+
+  p {
+    font-size: 1.25rem;
+    color: #64748b;
+  }
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.game-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2.5rem;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-top: 6px solid transparent;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  &.mega { border-color: var(--mega-color); h2 { color: var(--mega-color); } }
+  &.lotofacil { border-color: var(--loto-color); h2 { color: var(--loto-color); } }
+  &.quina { border-color: var(--quina-color); h2 { color: var(--quina-color); } }
+  &.lotomania { border-color: var(--lotomania-color); h2 { color: var(--lotomania-color); } }
+  &.dupla { border-color: var(--dupla-color); h2 { color: var(--dupla-color); } }
+  &.dia { border-color: var(--dia-color); h2 { color: var(--dia-color); } }
+  &.super { border-color: var(--super-color); h2 { color: var(--super-color); } }
+  &.milionaria { border-color: var(--milionaria-color); h2 { color: var(--milionaria-color); } }
+
+  h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: #64748b;
+    margin-bottom: 2rem;
+  }
+
+  .btn-outline {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    border: 2px solid currentColor;
+    border-radius: 9999px;
+    font-weight: 600;
+    transition: all 0.2s;
+    background: transparent;
+
+    &:hover {
+      background: currentColor;
+      color: white;
+    }
+  }
+}
+
+.game-card.mega .btn-outline { color: var(--mega-color); }
+.game-card.lotofacil .btn-outline { color: var(--loto-color); }
+.game-card.quina .btn-outline { color: var(--quina-color); }
+.game-card.lotomania .btn-outline { color: var(--lotomania-color); }
+.game-card.dupla .btn-outline { color: var(--dupla-color); }
+.game-card.dia .btn-outline { color: var(--dia-color); }
+.game-card.super .btn-outline { color: var(--super-color); }
+.game-card.milionaria .btn-outline { color: var(--milionaria-color); }

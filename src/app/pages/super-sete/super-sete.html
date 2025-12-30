@@ -1,0 +1,97 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>Super Sete</h2>
+    <p>Escolha 1 número em cada uma das 7 colunas</p>
+  </div>
+
+  <div class="container">
+    <div class="controls">
+      <div class="tabs">
+        <button [class.active]="mode === 'RANDOM'" (click)="mode = 'RANDOM'; generatedGames = []">Aleatório</button>
+        <button [class.active]="mode === 'MANUAL'" (click)="mode = 'MANUAL'; generatedGames = []">Manual</button>
+      </div>
+
+      <div class="control-panel" *ngIf="mode === 'RANDOM'">
+        <div class="input-group">
+          <label>Quantidade de jogos:</label>
+          <input type="number" [(ngModel)]="randomCount" min="1" max="50">
+        </div>
+        <button class="btn-generate" (click)="generateRandom()">Gerar Jogos</button>
+      </div>
+
+      <div class="control-panel" *ngIf="mode === 'MANUAL'">
+        <div class="columns-container">
+          <div class="column" *ngFor="let col of columns">
+            <h4>Col {{ col + 1 }}</h4>
+            <div class="column-grid">
+              <button 
+                *ngFor="let num of numbers"
+                class="number-btn"
+                [class.selected]="selectedPerColumn[col] === num"
+                (click)="selectNumber(col, num)">
+                {{ num }}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button 
+            class="btn-generate" 
+            [disabled]="!isSelectionComplete"
+            (click)="addManualGame()">
+            Adicionar Jogo
+          </button>
+          <button class="btn-clear" (click)="clearSelection()">Limpar Tudo</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="results" *ngIf="generatedGames.length > 0">
+      <div class="results-header">
+        <h3>Jogos Gerados ({{ generatedGames.length }})</h3>
+        <button class="btn-print" (click)="exportPdf()">🖨️ Imprimir Volantes</button>
+      </div>
+
+      <div class="check-results">
+        <div class="check-controls">
+          <input type="number" [(ngModel)]="contestNumber" placeholder="Nº Concurso (Opcional)">
+          <button (click)="checkResult()" [disabled]="isChecking">
+            {{ isChecking ? 'Buscando...' : 'Conferir Resultado' }}
+          </button>
+        </div>
+        
+        <div class="last-result" *ngIf="lastResult">
+          <p>Concurso: <strong>{{ lastResult.concurso }}</strong> - {{ lastResult.data }}</p>
+          <div class="result-balls">
+            <div class="column-ball result" *ngFor="let num of resultNumbers; let c = index">
+              <span class="col-label">C{{c+1}}</span>
+              <span class="ball result">{{ num }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="games-list">
+        <div class="game-row" *ngFor="let game of paginatedGames; let i = index">
+          <span class="game-index">Jogo {{ (currentPage - 1) * pageSize + i + 1 }}</span>
+          <div class="balls">
+            <div class="column-ball" *ngFor="let num of game; let c = index">
+              <span class="col-label">C{{c+1}}</span>
+              <span class="ball" [class.match]="checkColumnHit(game, c)">{{ num }}</span>
+            </div>
+          </div>
+          <div class="hits-badge" *ngIf="lastResult" [ngClass]="'hit-' + getHits(game, resultNumbers)">
+            {{ getHits(game, resultNumbers) }} acertos
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">&lt;</button>
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">&gt;</button>
+      </div>
+    </div>
+  </div>
+</div>

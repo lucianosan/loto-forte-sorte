@@ -1,0 +1,128 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>Dia de Sorte</h2>
+    <p>7 números + 1 Mês de Sorte</p>
+  </div>
+
+  <div class="container">
+    <div class="controls">
+      <div class="tabs">
+        <button [class.active]="mode === 'RANDOM'" (click)="mode = 'RANDOM'; generatedGames = []">Aleatório</button>
+        <button [class.active]="mode === 'COMBINATION'" (click)="mode = 'COMBINATION'; generatedGames = []">Combinações</button>
+        <button [class.active]="mode === 'CLOSURE'" (click)="mode = 'CLOSURE'; generatedGames = []">Fechamento</button>
+      </div>
+
+      <div class="control-panel" *ngIf="mode === 'RANDOM'">
+        <div class="input-group">
+          <label>Quantidade de jogos:</label>
+          <input type="number" [(ngModel)]="randomCount" min="1" max="50">
+        </div>
+        <button class="btn-generate" (click)="generateRandom()">Gerar Jogos</button>
+      </div>
+
+      <div class="control-panel" *ngIf="mode === 'COMBINATION' || mode === 'CLOSURE'">
+        <div class="selection-info">
+          <p>Números: <strong>{{ selectedNumbers.size }}</strong> (Mín: 7, Máx: 15) | Mês: <strong>{{ selectedMonth ? getMonthName(selectedMonth) : 'Nenhum' }}</strong></p>
+        </div>
+
+        <div class="closure-options" *ngIf="mode === 'CLOSURE'">
+          <label>Garantia se acertar 7:</label>
+          <select [(ngModel)]="closureGuarantee">
+            <option [value]="4">Quadra (4 acertos)</option>
+            <option [value]="5">Quina (5 acertos)</option>
+            <option [value]="6">Sena (6 acertos)</option>
+          </select>
+        </div>
+        
+        <label>Escolha os Números:</label>
+        <div class="number-grid">
+          <button 
+            *ngFor="let num of availableNumbers"
+            class="number-btn"
+            [class.selected]="selectedNumbers.has(num)"
+            (click)="toggleNumber(num)">
+            {{ num | number:'2.0-0' }}
+          </button>
+        </div>
+
+        <label>Escolha o Mês de Sorte:</label>
+        <div class="month-grid">
+          <button 
+            *ngFor="let month of months; let i = index"
+            class="month-btn"
+            [class.selected]="selectedMonth === (i + 1)"
+            (click)="selectMonth(i)">
+            {{ month.substring(0, 3) }}
+          </button>
+        </div>
+
+        <div class="actions">
+          <button 
+            class="btn-generate" 
+            [disabled]="!isCombinationValid"
+            (click)="mode === 'COMBINATION' ? generateCombinations() : generateClosure()">
+            {{ mode === 'COMBINATION' ? 'Gerar Combinações' : 'Gerar Fechamento' }}
+          </button>
+          <button class="btn-clear" (click)="clearSelection()">Limpar Seleção</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="results" *ngIf="generatedGames.length > 0">
+      <div class="results-header">
+        <h3>Jogos Gerados ({{ generatedGames.length }})</h3>
+        <button class="btn-print" (click)="exportPdf()">🖨️ Imprimir Volantes</button>
+      </div>
+
+      <div class="check-results">
+        <div class="check-controls">
+          <input type="number" [(ngModel)]="contestNumber" placeholder="Nº Concurso (Opcional)">
+          <button (click)="checkResult()" [disabled]="isChecking">
+            {{ isChecking ? 'Buscando...' : 'Conferir Resultado' }}
+          </button>
+        </div>
+        
+        <div class="last-result" *ngIf="lastResult">
+          <p>Concurso: <strong>{{ lastResult.concurso }}</strong> - {{ lastResult.data }}</p>
+          <div class="result-balls">
+            <span class="ball result" *ngFor="let num of resultNumbers">{{ num | number:'2.0-0' }}</span>
+            <span class="ball result month-result" *ngIf="lastResult.mesSorte">{{ lastResult.mesSorte }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="games-list">
+        <div class="game-row" *ngFor="let game of paginatedGames; let i = index">
+          <span class="game-index">Jogo {{ (currentPage - 1) * pageSize + i + 1 }}</span>
+          <div class="balls">
+            <!-- First 7 are numbers -->
+            <span class="ball" 
+              *ngFor="let num of game.slice(0, 7)"
+              [class.match]="resultNumbers.includes(num)">
+              {{ num | number:'2.0-0' }}
+            </span>
+            <!-- Last one is Month -->
+            <span class="ball month-ball"
+              [class.match]="checkMonthHit(game)">
+              {{ getMonthName(game[7]) }}
+            </span>
+          </div>
+          <div class="hits-info" *ngIf="lastResult">
+            <div class="hits-badge" [ngClass]="'hit-' + getHits(game, resultNumbers)">
+              {{ getHits(game, resultNumbers) }} acertos
+            </div>
+            <div class="month-badge" *ngIf="checkMonthHit(game)">
+              Mês da Sorte!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination" *ngIf="totalPages > 1">
+        <button (click)="prevPage()" [disabled]="currentPage === 1">&lt;</button>
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+        <button (click)="nextPage()" [disabled]="currentPage === totalPages">&gt;</button>
+      </div>
+    </div>
+  </div>
+</div>
